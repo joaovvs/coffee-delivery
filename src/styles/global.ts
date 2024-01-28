@@ -13,9 +13,9 @@ export const GlobalStyle = createGlobalStyle`
 }
 
 body{
-    background: black;
+    background: ${({ theme }) => theme.colors.background};
 
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', 'sans-serif';
     font-size: 1.6rem;
     line-height: 130%;
 

@@ -51,6 +51,17 @@ export const CartButton = styled.button`
   color: ${({ theme }) => theme.colors.yellowDark};
   font-size: 2.2rem;
 
+  transition: scale 0.2s;
+
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  &:active {
+    transform: scale(1.1);
+  }
+
   span {
     display: flex;
     align-items: center;

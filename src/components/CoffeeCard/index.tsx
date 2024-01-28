@@ -1,11 +1,15 @@
 import { Minus, Plus, ShoppingCart, Trash } from 'phosphor-react'
 import { coffees } from '../../data/data'
 import {
+  Actions,
   Buy,
   CartButton,
   CartCard,
   CatalogCard,
   Counter,
+  Details,
+  Info,
+  RemoveButton,
   TagWrapper,
 } from './styled'
 
@@ -39,7 +43,7 @@ export default function CoffeeCard({
                 })}
               </span>
             </span>
-            <div>
+            <Actions>
               <Counter>
                 <button>
                   <Minus />
@@ -52,20 +56,42 @@ export default function CoffeeCard({
               <CartButton name="addCart">
                 <ShoppingCart weight="fill" />
               </CartButton>
-            </div>
+            </Actions>
           </Buy>
         </CatalogCard>
       )}
 
       {variant === 'cart' && (
         <CartCard>
-          <img src={coffee.image} alt={`foto do café ${coffee.name}`} />
-          {coffee.tags.map((tag) => (
-            <span key={tag}>{tag}</span>
-          ))}
-          <button>
-            <Trash /> Remover
-          </button>
+          <Info>
+            <img src={coffee.image} alt={`foto do café ${coffee.name}`} />
+            <Details>
+              {coffee.tags.map((tag) => (
+                <span key={tag}>{tag}</span>
+              ))}
+              <Actions>
+                <Counter>
+                  <button>
+                    <Minus />
+                  </button>
+                  <input type="number" step={1} defaultValue={0}></input>
+                  <button>
+                    <Plus />
+                  </button>
+                </Counter>
+
+                <RemoveButton>
+                  <Trash /> Remover
+                </RemoveButton>
+              </Actions>
+            </Details>
+          </Info>
+          <span>
+            R${' '}
+            {coffee.price.toLocaleString('pt-br', {
+              minimumFractionDigits: 2,
+            })}
+          </span>
         </CartCard>
       )}
     </>

@@ -2,11 +2,12 @@ import styled from 'styled-components'
 
 export const LayoutContainer = styled.div`
   max-width: 100%;
-  height: calc(100vh - 10rem);
+  height: 100dvh;
+  overflow-y: scroll;
 
   padding: 3.2rem 16rem;
 
-  background-color: black;
+  background-color: ${({ theme }) => theme.colors.background};
 
   display: flex;
   flex-direction: column;
