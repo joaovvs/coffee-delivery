@@ -12,6 +12,8 @@ import {
   RemoveButton,
   TagWrapper,
 } from './styled'
+import { useContext, useState } from 'react'
+import { CartContext, CartItem } from '../../contexts/CartContext'
 
 interface CoffeeCardProps {
   variant?: 'catalog' | 'cart'
@@ -22,6 +24,34 @@ export default function CoffeeCard({
   variant = 'catalog',
   coffee,
 }: CoffeeCardProps) {
+  const [coffeeQuantity, setCoffeeQuantity] = useState(1)
+
+  const { addCoffeeToCart } = useContext(CartContext)
+
+  function handleIncrementQuantity() {
+    setCoffeeQuantity((prevState) => prevState + 1)
+  }
+
+  function handleDecrementQuantity() {
+    if (coffeeQuantity > 0) {
+      setCoffeeQuantity((prevState) => prevState - 1)
+    }
+  }
+
+  function handleAddToCart() {
+    if (coffeeQuantity > 0) {
+      const newItem: CartItem = {
+        coffeeId: coffee.id,
+        price: coffee.price,
+        quantity: coffeeQuantity,
+        totalPerItem: coffee.price * coffeeQuantity,
+      }
+      addCoffeeToCart(newItem)
+      setCoffeeQuantity(1)
+      alert('Item adicionado ao carrinho!')
+    }
+  }
+
   return (
     <>
       {variant === 'catalog' && (
@@ -45,15 +75,21 @@ export default function CoffeeCard({
             </span>
             <Actions>
               <Counter>
-                <button>
+                <button type="button" onClick={handleDecrementQuantity}>
                   <Minus />
                 </button>
-                <input type="number" step={1} defaultValue={0}></input>
-                <button>
+                <input
+                  type="number"
+                  name="quantityPicker"
+                  step={1}
+                  value={coffeeQuantity}
+                  readOnly={true}
+                />
+                <button onClick={handleIncrementQuantity}>
                   <Plus />
                 </button>
               </Counter>
-              <CartButton name="addCart">
+              <CartButton name="addCart" onClick={handleAddToCart}>
                 <ShoppingCart weight="fill" />
               </CartButton>
             </Actions>
@@ -71,11 +107,11 @@ export default function CoffeeCard({
               ))}
               <Actions>
                 <Counter>
-                  <button>
+                  <button type="button" onClick={handleDecrementQuantity}>
                     <Minus />
                   </button>
-                  <input type="number" step={1} defaultValue={0}></input>
-                  <button>
+                  <input type="number" step={1} value={coffeeQuantity}></input>
+                  <button onClick={handleIncrementQuantity}>
                     <Plus />
                   </button>
                 </Counter>

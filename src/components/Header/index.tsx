@@ -1,8 +1,11 @@
 import { CartButton, HeaderContainer } from './styles'
 import logoSVG from '../../assets/logo.svg'
 import { MapPin, ShoppingCart } from 'phosphor-react'
+import { useContext } from 'react'
+import { CartContext } from '../../contexts/CartContext'
 
 export function Header() {
+  const { totalQuantityItems } = useContext(CartContext)
   return (
     <HeaderContainer>
       <img src={logoSVG} alt="" />
@@ -12,7 +15,7 @@ export function Header() {
         </span>
         <CartButton>
           <ShoppingCart weight="fill" />
-          <span>3</span>
+          <span>{totalQuantityItems}</span>
         </CartButton>
       </div>
     </HeaderContainer>
