@@ -17,11 +17,17 @@ import {
   Value,
   ValuesWrapper,
 } from './styles'
-import CoffeeCard from '../../components/CoffeeCard'
 import { coffees } from '../../data/data'
 import { Input } from '../../components/Input'
+import { useContext } from 'react'
+import { CartContext } from '../../contexts/CartContext'
+import CoffeeCardCart from '../../components/CoffeeCardCart'
+import { NavLink } from 'react-router-dom'
 
 export function Checkout() {
+  const { userCart, totalPurchase, deliveryFee, totalItemsValue } =
+    useContext(CartContext)
+
   return (
     <CheckoutContainer>
       <div>
@@ -78,28 +84,55 @@ export function Checkout() {
       <div>
         <h2>Café selecionados</h2>
         <SelectedCoffees>
-          {/* add map for cart items */}
-          <div>
-            <CoffeeCard variant="cart" coffee={coffees[0]} />
-            <Divider />
-            <CoffeeCard variant="cart" coffee={coffees[1]} />
-            <Divider />
-          </div>
+          {userCart.map((item) => {
+            const selectedCoffee = coffees.find(
+              (coffee) => coffee.id === item.coffeeId,
+            )
+            return (
+              <div key={item.coffeeId}>
+                {selectedCoffee && (
+                  <>
+                    <CoffeeCardCart
+                      coffee={selectedCoffee}
+                      quantity={item.quantity}
+                    />
+                    <Divider />
+                  </>
+                )}
+              </div>
+            )
+          })}
           <ValuesWrapper>
             <Value>
               <span>Total de itens</span>
-              <span>R$ 29,70</span>
+              <span>
+                R${' '}
+                {totalItemsValue.toLocaleString('pt-br', {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
             </Value>
             <Value>
               <span>Entrega</span>
-              <span>R$ 3,50</span>
+              <span>
+                R${' '}
+                {deliveryFee.toLocaleString('pt-br', {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
             </Value>
             <Value>
               <span>Total</span>
-              <span>R$ 33,20</span>
+              <span>
+                R${' '}
+                {totalPurchase.toLocaleString('pt-br', {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
             </Value>
           </ValuesWrapper>
           <ConfirmButton>Confirmar Pedido</ConfirmButton>
+          <NavLink to={'/'}>Voltar</NavLink>
         </SelectedCoffees>
       </div>
     </CheckoutContainer>

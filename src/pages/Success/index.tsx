@@ -12,7 +12,7 @@ export function Success() {
       <main>
         <OrderInfo>
           <div>
-            <Tag variant="purple">
+            <Tag $variant="purple">
               <MapPin weight="fill" />
             </Tag>
             <TextContainer>
@@ -23,7 +23,7 @@ export function Success() {
             </TextContainer>
           </div>
           <div>
-            <Tag variant="yellow">
+            <Tag $variant="yellow">
               <Timer weight="fill" />
             </Tag>
             <TextContainer>
@@ -32,7 +32,7 @@ export function Success() {
             </TextContainer>
           </div>
           <div>
-            <Tag variant="yellowDark">
+            <Tag $variant="yellowDark">
               <CurrencyDollar weight="fill" />
             </Tag>
             <TextContainer>

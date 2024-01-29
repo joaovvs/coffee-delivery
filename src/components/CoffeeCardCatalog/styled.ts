@@ -54,43 +54,6 @@ export const TagWrapper = styled.div`
     line-height: 100%;
   }
 `
-export const CartCard = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-
-  align-items: flex-start;
-  justify-content: space-between;
-  background: ${({ theme }) => theme.colors.card};
-  padding: 8px 4px;
-
-  span {
-    font-weight: 700;
-    color: ${({ theme }) => theme.colors.text};
-  }
-`
-
-export const Info = styled.div`
-  display: flex;
-  gap: 2rem;
-
-  img {
-    width: 6.4rem;
-    height: 6.4rem;
-  }
-
-  span {
-    color: ${({ theme }) => theme.colors.subtitle};
-    font-weight: 400;
-
-    text-transform: capitalize;
-  }
-`
-
-export const Details = styled.div`
-  display: flex;
-  flex-direction: column;
-`
 
 export const Buy = styled.div`
   display: flex;
@@ -167,44 +130,5 @@ export const CartButton = styled.button`
 
   &:hover {
     background: ${({ theme }) => theme.colors.purple};
-  }
-`
-
-export const RemoveButton = styled.button`
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-  background: ${({ theme }) => theme.colors.button};
-
-  padding: 0.8rem;
-
-  text-transform: uppercase;
-
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 1.2rem;
-
-  gap: 0.4rem;
-
-  border: none;
-  border-radius: 6px;
-
-  cursor: pointer;
-
-  svg {
-    font-size: 1.6rem;
-    color: ${({ theme }) => theme.colors.purple};
-  }
-
-  &:hover {
-    background: ${({ theme }) => theme.colors.hover};
-
-    svg {
-      color: ${({ theme }) => theme.colors.purpleDark};
-    }
-  }
-
-  &:active {
-    transform: scale(0.95);
   }
 `

@@ -1,10 +1,11 @@
 import { ReactNode, useState, useEffect, createContext } from 'react'
+import { coffees } from '../data/data'
 
 export interface CartItem {
-  coffeeId: number
+  coffeeId: (typeof coffees)[number]['id']
   quantity: number
   price: number
-  totalPerItem: number
+  totalPerItem?: number
 }
 
 interface CartContextProviderProps {
@@ -13,10 +14,13 @@ interface CartContextProviderProps {
 
 interface CartContextType {
   userCart: CartItem[]
-  addCoffeeToCart: (newItem: CartItem) => void
-  removeCoffeeOnCart: (removedItem: CartItem) => void
   totalPurchase: number
   totalQuantityItems: number
+  totalItemsValue: number
+  deliveryFee: number
+  addCoffeeToCart: (newItem: CartItem) => void
+  removeCoffeeFromCart: (removedItem: (typeof coffees)[number]['id']) => void
+  updateCartItem: (updatedItem: CartItem) => void
 }
 
 const DELIVERY_FEE = 3.5
@@ -24,66 +28,79 @@ const DELIVERY_FEE = 3.5
 export const CartContext = createContext({} as CartContextType)
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
-  const [userCart, setUserCart] = useState<CartItem[]>([])
+  const [userCart, setUserCart] = useState<CartItem[]>(fetchCart)
 
-  const totalValue = userCart.reduce(
-    (_sum, { totalPerItem }) => _sum + totalPerItem,
-    0,
-  )
+  const totalItemsValue = userCart.reduce((_sum, cartItem) => {
+    if (cartItem.totalPerItem) {
+      return _sum + cartItem.totalPerItem
+    } else {
+      return 0
+    }
+  }, 0)
 
   const totalQuantityItems = userCart.reduce(
     (_sum, { quantity }) => _sum + quantity,
     0,
   )
   const deliveryFee = DELIVERY_FEE
-  const totalPurchase = totalValue + deliveryFee
+  const totalPurchase = totalItemsValue + deliveryFee
 
   function addCoffeeToCart({ coffeeId, quantity, price }: CartItem) {
-    const totalCartItem = quantity * price
+    const totalValuePerItem = quantity * price
     setUserCart((prevState) => [
       ...prevState,
-      { coffeeId, quantity, price, totalPerItem: totalCartItem },
+      { coffeeId, quantity, price, totalPerItem: totalValuePerItem },
     ])
   }
 
-  function removeCoffeeOnCart(removedItem: CartItem) {
-    setUserCart(
-      userCart.filter((item) => item.coffeeId !== removedItem.coffeeId),
+  function removeCoffeeFromCart(coffeeId: (typeof coffees)[number]['id']) {
+    setUserCart((prevState) =>
+      prevState.filter((item) => item.coffeeId !== coffeeId),
     )
   }
 
-  async function fetchCart() {
-    const storedStateAsJson = await localStorage.getItem(
+  function updateCartItem({ coffeeId, quantity, price }: CartItem) {
+    removeCoffeeFromCart(coffeeId)
+
+    addCoffeeToCart({ coffeeId, quantity, price })
+
+    sortItemCartById()
+  }
+
+  function fetchCart(): CartItem[] {
+    const storedStateAsJson = localStorage.getItem(
       '@ignite-coffeeShop:user-cart-state-1.0.0',
     )
     if (storedStateAsJson) {
-      setUserCart(JSON.parse(storedStateAsJson))
+      return JSON.parse(storedStateAsJson)
+    } else {
+      return [] as CartItem[]
     }
   }
 
-  useEffect(() => {
-    if (userCart.length > 0) {
-      const stateJson = JSON.stringify(userCart)
+  function sortItemCartById() {
+    setUserCart((prevState) =>
+      prevState.sort((a: CartItem, b: CartItem) => a.coffeeId - b.coffeeId),
+    )
+  }
 
-      localStorage.setItem(
-        '@ignite-coffeeShop:user-cart-state-1.0.0',
-        stateJson,
-      )
-    }
+  useEffect(() => {
+    const stateJson = JSON.stringify(userCart)
+
+    localStorage.setItem('@ignite-coffeeShop:user-cart-state-1.0.0', stateJson)
   }, [userCart])
-
-  useEffect(() => {
-    fetchCart()
-  }, [])
 
   return (
     <CartContext.Provider
       value={{
         userCart,
-        addCoffeeToCart,
-        removeCoffeeOnCart,
         totalPurchase,
         totalQuantityItems,
+        totalItemsValue,
+        deliveryFee,
+        addCoffeeToCart,
+        removeCoffeeFromCart,
+        updateCartItem,
       }}
     >
       {children}

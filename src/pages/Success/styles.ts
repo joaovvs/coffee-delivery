@@ -72,11 +72,11 @@ export const OrderInfo = styled.div`
 `
 
 interface TagProps {
-  variant: 'yellowDark' | 'yellow' | 'purple'
+  $variant: 'yellowDark' | 'yellow' | 'purple'
 }
 
 export const Tag = styled.span<TagProps>`
-  background: ${({ theme, variant }) => theme.colors[variant]};
+  background: ${({ theme, $variant }) => theme.colors[$variant]};
 `
 
 export const TextContainer = styled.div`

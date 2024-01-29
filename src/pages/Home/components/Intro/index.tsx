@@ -16,14 +16,14 @@ export function Intro() {
           <tbody>
             <tr>
               <td>
-                <ItemIcon variant="yellowDark">
+                <ItemIcon $variant="yellowDark">
                   <ShoppingCart weight="fill" />
                 </ItemIcon>
                 <span>Compra simples e segura</span>
               </td>
 
               <td>
-                <ItemIcon variant="text">
+                <ItemIcon $variant="text">
                   <Package weight="fill" />
                 </ItemIcon>
                 <span> Embalagem mantém o café intacto</span>
@@ -32,14 +32,14 @@ export function Intro() {
 
             <tr>
               <td>
-                <ItemIcon variant="yellow">
+                <ItemIcon $variant="yellow">
                   <Timer weight="fill" />
                 </ItemIcon>
                 <span>Entrega rápida e rastreada</span>
               </td>
 
               <td>
-                <ItemIcon variant="purple">
+                <ItemIcon $variant="purple">
                   <Coffee weight="fill" />
                 </ItemIcon>
                 <span>O café chega fresquinho até você</span>

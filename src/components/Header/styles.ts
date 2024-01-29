@@ -35,53 +35,53 @@ export const HeaderContainer = styled.header`
       font-size: 2.2rem;
     }
   }
-`
 
-export const CartButton = styled.button`
-  display: flex;
-  position: relative;
-
-  border: none;
-  border-radius: 6px;
-
-  background: ${({ theme }) => theme.colors.yellowLight};
-
-  padding: 0.8rem;
-
-  color: ${({ theme }) => theme.colors.yellowDark};
-  font-size: 2.2rem;
-
-  transition: scale 0.2s;
-
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.2);
-  }
-
-  &:active {
-    transform: scale(1.1);
-  }
-
-  span {
+  a {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
 
-    position: absolute;
-    top: 0;
-    right: 0;
+    border: none;
+    border-radius: 6px;
+
+    background: ${({ theme }) => theme.colors.yellowLight};
+
     padding: 0.8rem;
 
-    width: 2rem;
-    height: 2rem;
+    color: ${({ theme }) => theme.colors.yellowDark};
+    font-size: 2.2rem;
 
-    margin-top: -8px;
-    margin-right: -8px;
+    transition: scale 0.2s;
 
-    border-radius: 1000px;
-    background: ${({ theme }) => theme.colors.yellowDark};
-    color: ${({ theme }) => theme.colors.white};
-    font-size: 1.2rem;
-    line-height: 0;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.2);
+    }
+
+    &:active {
+      transform: scale(1.1);
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 0.8rem;
+
+      width: 2rem;
+      height: 2rem;
+
+      margin-top: -8px;
+      margin-right: -8px;
+
+      border-radius: 1000px;
+      background: ${({ theme }) => theme.colors.yellowDark};
+      color: ${({ theme }) => theme.colors.white};
+      font-size: 1.2rem;
+      line-height: 0;
+    }
   }
 `

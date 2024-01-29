@@ -53,7 +53,7 @@ export const Table = styled.table`
   }
 `
 interface ItemIconProps {
-  variant: 'yellowDark' | 'yellow' | 'purple' | 'text'
+  $variant: 'yellowDark' | 'yellow' | 'purple' | 'text'
 }
 export const ItemIcon = styled.div<ItemIconProps>`
   width: 3.2rem;
@@ -70,6 +70,6 @@ export const ItemIcon = styled.div<ItemIconProps>`
   align-items: center;
   justify-content: center;
 
-  background: ${({ theme, variant }) => theme.colors[variant]};
+  background: ${({ theme, $variant }) => theme.colors[$variant]};
   color: ${({ theme }) => theme.colors.background};
 `

@@ -1,6 +1,6 @@
 import { CoffeeListContainer } from './styles'
 import { coffees } from '../../../../data/data'
-import CoffeeCard from '../../../../components/CoffeeCard'
+import CoffeeCardCatalog from '../../../../components/CoffeeCardCatalog'
 
 export default function CoffeeList() {
   return (
@@ -9,7 +9,7 @@ export default function CoffeeList() {
 
       <div>
         {coffees.map((coffee) => (
-          <CoffeeCard key={coffee.name} coffee={coffee} />
+          <CoffeeCardCatalog key={coffee.name} coffee={coffee} />
         ))}
       </div>
     </CoffeeListContainer>

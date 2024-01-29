@@ -20,6 +20,36 @@ export const CheckoutContainer = styled.div`
     flex-direction: column;
     gap: 1.2rem;
   }
+
+  a {
+    display: flex;
+    flex: 1;
+
+    text-decoration: none;
+
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+
+    padding: 1.2rem 0.8rem;
+
+    border-radius: 6px;
+
+    background: ${({ theme }) => theme.colors.button};
+    color: ${({ theme }) => theme.colors.text};
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    &:hover {
+      background: ${({ theme }) => theme.colors.label};
+    }
+  }
 `
 const baseContentStyles = styled.div`
   display: flex;
