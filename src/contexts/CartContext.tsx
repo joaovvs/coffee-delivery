@@ -14,7 +14,7 @@ interface CartContextProviderProps {
 
 interface CartContextType {
   userCart: CartItem[]
-  totalPurchase: number
+  totalOrder: number
   totalQuantityItems: number
   totalItemsValue: number
   deliveryFee: number
@@ -43,7 +43,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     0,
   )
   const deliveryFee = DELIVERY_FEE
-  const totalPurchase = totalItemsValue + deliveryFee
+  const totalOrder = totalItemsValue + deliveryFee
 
   function addCoffeeToCart({ coffeeId, quantity, price }: CartItem) {
     const totalValuePerItem = quantity * price
@@ -94,7 +94,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     <CartContext.Provider
       value={{
         userCart,
-        totalPurchase,
+        totalOrder,
         totalQuantityItems,
         totalItemsValue,
         deliveryFee,

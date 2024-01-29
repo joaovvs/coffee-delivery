@@ -39,3 +39,8 @@ export const InputContainer = styled.div`
     }
   }
 `
+
+export const ErrorMessage = styled.span`
+  font-size: 1rem;
+  color: ${({ theme }) => theme.colors.error};
+`

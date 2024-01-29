@@ -1,140 +1,81 @@
-import {
-  Bank,
-  CreditCard,
-  CurrencyDollar,
-  MapPinLine,
-  Money,
-} from 'phosphor-react'
-import {
-  CheckoutContainer,
-  ConfirmButton,
-  Divider,
-  FormContainer,
-  PaymentSelector,
-  PaymentsWrapper,
-  SelectedCoffees,
-  TitleAndSubtitle,
-  Value,
-  ValuesWrapper,
-} from './styles'
-import { coffees } from '../../data/data'
-import { Input } from '../../components/Input'
-import { useContext } from 'react'
-import { CartContext } from '../../contexts/CartContext'
-import CoffeeCardCart from '../../components/CoffeeCardCart'
+import { CheckoutFormContainer, ConfirmButton } from './styles'
+
+import PaymentSelector from './components/PaymentSelector'
+import SelectedCoffees from './components/SelectedCoffees'
+import { DeliveryAddressInputData } from './components/DeliveryAddressInputData'
+
+import { FormProvider, useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as zod from 'zod'
 import { NavLink } from 'react-router-dom'
 
+const CEP_REGEX = /\d{5}-\d{3}/
+const newOrderFormSchema = zod.object({
+  cep: zod
+    .string({ required_error: 'Campo obrigatório' })
+    .regex(CEP_REGEX, 'Informe um CEP no formato 00000-000'),
+  street: zod
+    .string()
+    .min(3, 'O endereço deve conter no mínimo 3 caracteres')
+    .max(100, 'O endereço deve conter no máximo 100 caracteres'),
+  number: zod.string(),
+  complement: zod.string().optional(),
+  district: zod.string(),
+  city: zod.string().min(3, 'Campo obrigatório'),
+  country: zod.string().min(2, 'Campo obrigatório'),
+})
+
+type NewOrderFormData = zod.infer<typeof newOrderFormSchema>
+
 export function Checkout() {
-  const { userCart, totalPurchase, deliveryFee, totalItemsValue } =
-    useContext(CartContext)
+  const newOrderForm = useForm<NewOrderFormData>({
+    resolver: zodResolver(newOrderFormSchema),
+    defaultValues: {
+      cep: '',
+      street: '',
+      number: '',
+      complement: '',
+      district: '',
+      city: '',
+      country: '',
+    },
+  })
+
+  const { handleSubmit } = newOrderForm
+
+  function handleOrderCartItems(data: NewOrderFormData) {
+    console.log('entrou aqui')
+    try {
+      newOrderFormSchema.parse(data)
+    } catch (error) {
+      if (error instanceof zod.ZodError) {
+        console.error(error.errors)
+      } else {
+        console.log(error)
+      }
+    }
+    console.log(data)
+  }
 
   return (
-    <CheckoutContainer>
-      <div>
-        <h2>Complete seu pedido</h2>
-        <FormContainer>
-          <header>
-            <MapPinLine />
-            <TitleAndSubtitle>
-              <h3>Endereço de entrega</h3>
-              <p>Informe o endereço onde deseja receber seu pedido</p>
-            </TitleAndSubtitle>
-          </header>
-          <form>
-            <Input placeholder="CEP" />
-            <Input placeholder="Rua" />
-            <div>
-              <Input placeholder="Número" />
-              <Input placeholder="Complemento" optional={true} />
-            </div>
-            <div>
-              <Input placeholder="Bairro" />
-              <Input placeholder="Cidade" />
-              <Input placeholder="UF" />
-            </div>
-          </form>
-        </FormContainer>
+    <CheckoutFormContainer onSubmit={handleSubmit(handleOrderCartItems)}>
+      <FormProvider {...newOrderForm}>
+        <div>
+          <h2>Complete seu pedido</h2>
+          <DeliveryAddressInputData />
 
-        <PaymentSelector>
-          <header>
-            <CurrencyDollar />
-            <TitleAndSubtitle>
-              <h3>Pagamento</h3>
-              <p>
-                Pagamento é feito na entrega. Escolha a forma que deseja pagar
-              </p>
-            </TitleAndSubtitle>
-          </header>
-          <PaymentsWrapper>
-            <button type="button">
-              <CreditCard />
-              Cartão de crédito
-            </button>
-            <button type="button">
-              <Bank />
-              Cartão de débito
-            </button>
-            <button type="button">
-              <Money />
-              Dinheiro
-            </button>
-          </PaymentsWrapper>
-        </PaymentSelector>
-      </div>
-      <div>
-        <h2>Café selecionados</h2>
-        <SelectedCoffees>
-          {userCart.map((item) => {
-            const selectedCoffee = coffees.find(
-              (coffee) => coffee.id === item.coffeeId,
-            )
-            return (
-              <div key={item.coffeeId}>
-                {selectedCoffee && (
-                  <>
-                    <CoffeeCardCart
-                      coffee={selectedCoffee}
-                      quantity={item.quantity}
-                    />
-                    <Divider />
-                  </>
-                )}
-              </div>
-            )
-          })}
-          <ValuesWrapper>
-            <Value>
-              <span>Total de itens</span>
-              <span>
-                R${' '}
-                {totalItemsValue.toLocaleString('pt-br', {
-                  minimumFractionDigits: 2,
-                })}
-              </span>
-            </Value>
-            <Value>
-              <span>Entrega</span>
-              <span>
-                R${' '}
-                {deliveryFee.toLocaleString('pt-br', {
-                  minimumFractionDigits: 2,
-                })}
-              </span>
-            </Value>
-            <Value>
-              <span>Total</span>
-              <span>
-                R${' '}
-                {totalPurchase.toLocaleString('pt-br', {
-                  minimumFractionDigits: 2,
-                })}
-              </span>
-            </Value>
-          </ValuesWrapper>
-          <ConfirmButton>Confirmar Pedido</ConfirmButton>
-          <NavLink to={'/'}>Voltar</NavLink>
-        </SelectedCoffees>
-      </div>
-    </CheckoutContainer>
+          <PaymentSelector />
+        </div>
+        <div>
+          <h2>Café selecionados</h2>
+          <SelectedCoffees>
+            <>
+              <ConfirmButton>Confirmar Pedido</ConfirmButton>
+              <NavLink to={'/'}>Voltar</NavLink>
+            </>
+          </SelectedCoffees>
+        </div>
+      </FormProvider>
+    </CheckoutFormContainer>
   )
 }

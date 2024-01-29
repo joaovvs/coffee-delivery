@@ -66,17 +66,18 @@ export default function CoffeeCardCart({
                 <Minus />
               </button>
               <input
+                id="quantity"
                 type="number"
                 step={1}
                 value={coffeeQuantity}
                 readOnly
               ></input>
-              <button onClick={handleIncrementQuantity}>
+              <button onClick={handleIncrementQuantity} type="button">
                 <Plus />
               </button>
             </Counter>
 
-            <RemoveButton onClick={handleRemoveFromCart}>
+            <RemoveButton onClick={handleRemoveFromCart} type="button">
               <Trash /> Remover
             </RemoveButton>
           </Actions>
