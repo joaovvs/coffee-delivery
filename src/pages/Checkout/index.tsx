@@ -78,12 +78,7 @@ export function Checkout() {
 
   const { createOrder } = useContext(CartContext)
 
-  const {
-    handleSubmit,
-    reset,
-    watch,
-    formState: { errors },
-  } = newOrderForm
+  const { handleSubmit, reset } = newOrderForm
 
   function handleOrderCartItems(data: newOrderFormType) {
     try {
@@ -99,8 +94,6 @@ export function Checkout() {
       }
     }
   }
-
-  const selectedOption = watch('paymentMode')
 
   return (
     <CheckoutFormContainer onSubmit={handleSubmit(handleOrderCartItems)}>
