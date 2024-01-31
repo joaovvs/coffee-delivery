@@ -18,6 +18,16 @@ Bem-vindo ao README da aplicação Coffee Delivery! Esta é uma aplicação que 
 7. Definição da forma de pagamento.
 8. COnfirmação do pedido
 
+
+### Stacks
+
+- React
+- TypeScript
+- Vite
+- Styled Components
+- React Hook Forms
+- Zod
+
 ### URL da Aplicação
 
    Ambiente de demonstração https://coffee-delivery-delta-seven.vercel.app/
