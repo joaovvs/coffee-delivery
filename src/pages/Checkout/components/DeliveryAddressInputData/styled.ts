@@ -61,3 +61,12 @@ export const DistrictCityAndCountry = styled.div`
     width: 10.7%;
   }
 `
+
+export const ErrorMessage = styled.span`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: ${({ theme }) => theme.colors.error};
+
+  font-size: 3rem;
+`

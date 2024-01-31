@@ -1,9 +1,10 @@
-import { MapPinLine } from 'phosphor-react'
+import { MapPinLine, Warning } from 'phosphor-react'
 import {
   DeliveryAddressInputDataContainer,
   TitleAndSubtitle,
   NumberAndComplement,
   DistrictCityAndCountry,
+  ErrorMessage,
 } from './styled'
 import { InputStyled } from '../../../../components/InputStyled'
 import { useFormContext } from 'react-hook-form'
@@ -15,7 +16,7 @@ export function DeliveryAddressInputData() {
   } = useFormContext()
 
   return (
-    <DeliveryAddressInputDataContainer>
+    <DeliveryAddressInputDataContainer $hasError={!!errors.address}>
       <header>
         <MapPinLine />
         <TitleAndSubtitle>
@@ -25,54 +26,111 @@ export function DeliveryAddressInputData() {
       </header>
       <div>
         <InputStyled
-          errorMessage={errors.cep ? String(errors.cep.message) : null}
+          errorMessage={
+            errors.address &&
+            'zipCode' in errors.address &&
+            errors.address.zipCode
+              ? String(errors.address.zipCode.message)
+              : null
+          }
         >
-          <input id="cep" placeholder="CEP" {...register('cep')} />
+          <input
+            id="zipCode"
+            placeholder="CEP"
+            {...register('address.zipCode')}
+          />
         </InputStyled>
         <InputStyled
-          errorMessage={errors.street ? String(errors.street.message) : null}
+          errorMessage={
+            errors.address &&
+            'street' in errors.address &&
+            errors.address.street
+              ? String(errors.address.street.message)
+              : null
+          }
         >
-          <input id="street" placeholder="Rua" {...register('street')} />
+          <input
+            id="street"
+            placeholder="Rua"
+            {...register('address.street')}
+          />
         </InputStyled>
         <NumberAndComplement>
-          <InputStyled>
-            <input id="number" placeholder="Número" {...register('number')} />
+          <InputStyled
+            errorMessage={
+              errors.address &&
+              'number' in errors.address &&
+              errors.address.number
+                ? String(errors.address.number.message)
+                : null
+            }
+          >
+            <input
+              id="number"
+              placeholder="Número"
+              {...register('address.number')}
+            />
           </InputStyled>
           <InputStyled $optional>
             <input
               id="complement"
               placeholder="Complemento"
-              {...register('complement')}
+              {...register('address.complement')}
             />
           </InputStyled>
         </NumberAndComplement>
         <DistrictCityAndCountry>
-          <InputStyled>
+          <InputStyled
+            errorMessage={
+              errors.address &&
+              'district' in errors.address &&
+              errors.address.district
+                ? String(errors.address.district.message)
+                : null
+            }
+          >
             <input
               id="district"
               placeholder="Bairro"
-              {...register('district')}
+              {...register('address.district')}
             />
           </InputStyled>
           <InputStyled
-            errorMessage={errors.city ? String(errors.city.message) : null}
+            errorMessage={
+              errors.address && 'city' in errors.address && errors.address.city
+                ? String(errors.address.city.message)
+                : null
+            }
           >
-            <input id="city" placeholder="Cidade" {...register('city')} />
+            <input
+              id="city"
+              placeholder="Cidade"
+              {...register('address.city')}
+            />
           </InputStyled>
           <InputStyled
             errorMessage={
-              errors.country ? String(errors.country.message) : null
+              errors.address &&
+              'country' in errors.address &&
+              errors.address.country
+                ? String(errors.address.country.message)
+                : null
             }
           >
             <input
               id="country"
               placeholder="UF"
-              {...register('country')}
+              {...register('address.country')}
               autoComplete="country"
             />{' '}
           </InputStyled>
         </DistrictCityAndCountry>
       </div>
+      {errors.address && (
+        <ErrorMessage title={'Preencha os campos corretamente!'}>
+          <Warning />
+        </ErrorMessage>
+      )}
     </DeliveryAddressInputDataContainer>
   )
 }

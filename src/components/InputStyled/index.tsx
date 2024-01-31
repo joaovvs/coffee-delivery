@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { ErrorMessage, InputContainer } from './styles'
+import { Warning } from 'phosphor-react'
 
 interface InputProps {
   $optional?: boolean
@@ -13,12 +14,14 @@ export function InputStyled({
   errorMessage,
 }: InputProps) {
   return (
-    <>
-      <InputContainer>
-        {children}
-        {$optional && <span>Opcional</span>}
-      </InputContainer>
-      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-    </>
+    <InputContainer>
+      {children}
+      {$optional && <span>Opcional</span>}
+      {errorMessage && (
+        <ErrorMessage title={errorMessage}>
+          <Warning />
+        </ErrorMessage>
+      )}
+    </InputContainer>
   )
 }

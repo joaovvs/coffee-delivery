@@ -7,55 +7,103 @@ import { DeliveryAddressInputData } from './components/DeliveryAddressInputData'
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as zod from 'zod'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useContext } from 'react'
+import { CartContext } from '../../contexts/CartContext'
 
 const CEP_REGEX = /\d{5}-\d{3}/
-const newOrderFormSchema = zod.object({
-  cep: zod
+
+const productsSchema = zod.object({
+  coffeeId: zod.number(),
+  quantity: zod.number(),
+  price: zod.number(),
+  totalPerItem: zod.number(),
+})
+
+const addressSchema = zod.object({
+  zipCode: zod
     .string({ required_error: 'Campo obrigatório' })
     .regex(CEP_REGEX, 'Informe um CEP no formato 00000-000'),
   street: zod
     .string()
     .min(3, 'O endereço deve conter no mínimo 3 caracteres')
     .max(100, 'O endereço deve conter no máximo 100 caracteres'),
-  number: zod.string(),
+  number: zod.string().min(1, 'Campo obrigatório'),
   complement: zod.string().optional(),
-  district: zod.string(),
-  city: zod.string().min(3, 'Campo obrigatório'),
-  country: zod.string().min(2, 'Campo obrigatório'),
+  district: zod.string().min(3, 'Campo deve ter no mínimo 3 caracteres'),
+  city: zod.string().min(3, 'Campo deve conter no mínimo 3 caracteres'),
+  country: zod.string().min(2, 'Campo deve conter no mínimo 2 caracteres'),
 })
 
-type NewOrderFormData = zod.infer<typeof newOrderFormSchema>
+const paymentModes = {
+  credit: 'credit',
+  debit: 'debit',
+  cash: 'cash',
+} as const
+
+const newOrderFormSchema = zod.object({
+  address: addressSchema,
+  paymentMode: zod.nativeEnum(paymentModes, {
+    errorMap: (issue) => {
+      if (issue.code === 'invalid_enum_value') {
+        return { message: 'Selecione uma das opções' }
+      } else return { message: 'Campo inválido' }
+    },
+  }),
+  products: zod
+    .array(productsSchema)
+    .min(1, 'Não existem produtos no carrinho'),
+})
+
+export type newOrderFormType = zod.infer<typeof newOrderFormSchema>
 
 export function Checkout() {
-  const newOrderForm = useForm<NewOrderFormData>({
+  const newOrderForm = useForm<newOrderFormType>({
     resolver: zodResolver(newOrderFormSchema),
     defaultValues: {
-      cep: '',
-      street: '',
-      number: '',
-      complement: '',
-      district: '',
-      city: '',
-      country: '',
+      address: {
+        zipCode: '',
+        street: '',
+        number: '',
+        complement: '',
+        district: '',
+        city: '',
+        country: '',
+      },
+      paymentMode: undefined,
     },
   })
 
-  const { handleSubmit } = newOrderForm
+  const navigate = useNavigate()
 
-  function handleOrderCartItems(data: NewOrderFormData) {
-    console.log('entrou aqui')
+  const { createOrder } = useContext(CartContext)
+
+  const {
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = newOrderForm
+
+  function handleOrderCartItems(data: newOrderFormType) {
     try {
       newOrderFormSchema.parse(data)
+      createOrder(data)
+      navigate('/success')
+      reset()
     } catch (error) {
       if (error instanceof zod.ZodError) {
-        console.error(error.errors)
+        return console.error('submit error', error.errors)
       } else {
-        console.log(error)
+        return console.log(error)
       }
     }
-    console.log(data)
   }
+
+  const selectedOption = watch('paymentMode')
+
+  console.log('OPÇÃO SELECIONADA', selectedOption)
+  console.log('Erros', errors)
 
   return (
     <CheckoutFormContainer onSubmit={handleSubmit(handleOrderCartItems)}>

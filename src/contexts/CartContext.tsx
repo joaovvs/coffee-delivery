@@ -1,5 +1,6 @@
 import { ReactNode, useState, useEffect, createContext } from 'react'
-import { coffees } from '../data/data'
+import { coffees, AcceptedPayments } from '../data/data'
+import { newOrderFormType } from '../pages/Checkout'
 
 export interface CartItem {
   coffeeId: (typeof coffees)[number]['id']
@@ -8,12 +9,40 @@ export interface CartItem {
   totalPerItem?: number
 }
 
+export interface OrderDataProps {
+  address: {
+    zipCode: string
+    street: string
+    number?: string
+    complement?: string
+    district?: string
+    city: string
+    country: string
+  }
+  paymentMode: (typeof AcceptedPayments)[number]['value']
+  products: CartItem[]
+  deliveryFee: number
+  totalOrderValue: number
+}
+
 interface CartContextProviderProps {
   children: ReactNode
 }
 
+export interface NewOrderData {
+  number: string
+  paymentMode: (typeof AcceptedPayments)[number]['value']
+  zipCode: string
+  street: string
+  district: string
+  city: string
+  country: string
+  complement?: string | undefined
+}
+
 interface CartContextType {
   userCart: CartItem[]
+  orderData: OrderDataProps
   totalOrder: number
   totalQuantityItems: number
   totalItemsValue: number
@@ -21,6 +50,7 @@ interface CartContextType {
   addCoffeeToCart: (newItem: CartItem) => void
   removeCoffeeFromCart: (removedItem: (typeof coffees)[number]['id']) => void
   updateCartItem: (updatedItem: CartItem) => void
+  createOrder: (data: newOrderFormType) => void
 }
 
 const DELIVERY_FEE = 3.5
@@ -29,6 +59,9 @@ export const CartContext = createContext({} as CartContextType)
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
   const [userCart, setUserCart] = useState<CartItem[]>(fetchCart)
+  const [orderData, setOrderData] = useState<OrderDataProps>(
+    {} as OrderDataProps,
+  )
 
   const totalItemsValue = userCart.reduce((_sum, cartItem) => {
     if (cartItem.totalPerItem) {
@@ -67,6 +100,24 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     sortItemCartById()
   }
 
+  function resetCart() {
+    const emptyCart = [] as CartItem[]
+
+    setUserCart(emptyCart)
+  }
+
+  function createOrder(data: newOrderFormType) {
+    const newOrder: OrderDataProps = {
+      address: data.address,
+      paymentMode: data.paymentMode,
+      products: userCart,
+      deliveryFee,
+      totalOrderValue: totalOrder,
+    }
+    setOrderData(newOrder)
+    resetCart()
+  }
+
   function fetchCart(): CartItem[] {
     const storedStateAsJson = localStorage.getItem(
       '@ignite-coffeeShop:user-cart-state-1.0.0',
@@ -90,10 +141,17 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     localStorage.setItem('@ignite-coffeeShop:user-cart-state-1.0.0', stateJson)
   }, [userCart])
 
+  useEffect(() => {
+    const stateJson = JSON.stringify(orderData)
+
+    localStorage.setItem('@ignite-coffeeShop:user-order-state-1.0.0', stateJson)
+  }, [orderData])
+
   return (
     <CartContext.Provider
       value={{
         userCart,
+        orderData,
         totalOrder,
         totalQuantityItems,
         totalItemsValue,
@@ -101,6 +159,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
         addCoffeeToCart,
         removeCoffeeFromCart,
         updateCartItem,
+        createOrder,
       }}
     >
       {children}

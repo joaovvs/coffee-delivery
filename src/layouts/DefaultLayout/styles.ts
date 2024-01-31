@@ -5,8 +5,6 @@ export const LayoutContainer = styled.div`
   height: 100dvh;
   overflow-y: scroll;
 
-  padding: 3.2rem 16rem;
-
   background-color: ${({ theme }) => theme.colors.background};
 
   display: flex;

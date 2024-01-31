@@ -12,6 +12,8 @@ import cubanoImg from '../assets/cubano.png'
 import havaianoImg from '../assets/havaiano.png'
 import arabeImg from '../assets/arabe.png'
 import irlandesImg from '../assets/irlandes.png'
+import { Bank, CreditCard, Money } from 'phosphor-react'
+import React from 'react'
 
 export const coffees = [
   {
@@ -130,4 +132,18 @@ export const coffees = [
     tags: ['especial', 'alcoólico'],
     image: irlandesImg,
   },
+] as const
+
+export const AcceptedPayments = [
+  {
+    value: 'credit',
+    label: 'Cartão de crédito',
+    icon: React.createElement(CreditCard),
+  },
+  {
+    value: 'debit',
+    label: 'Cartão de débito',
+    icon: React.createElement(Bank),
+  },
+  { value: 'cash', label: 'Dinheiro', icon: React.createElement(Money) },
 ] as const

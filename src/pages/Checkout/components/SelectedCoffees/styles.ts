@@ -8,6 +8,8 @@ export const SelectedCoffeesContainer = styled(baseContentStyles)`
 
   border-top-right-radius: 4.4rem;
   border-bottom-left-radius: 4.4rem;
+
+  position: relative;
 `
 
 export const Divider = styled.div`
@@ -40,4 +42,12 @@ export const Value = styled.div`
 
   font-size: 1.4rem;
   color: ${({ theme }) => theme.colors.text};
+`
+
+export const ErrorMessage = styled.div`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: ${({ theme }) => theme.colors.error};
+  font-size: 3rem;
 `

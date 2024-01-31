@@ -8,10 +8,13 @@ export const InputContainer = styled.div`
   border: 1px solid transparent;
   border-radius: 4px;
 
+  position: relative;
+
   background: ${({ theme }) => theme.colors.button};
 
   input {
     background: transparent;
+
     border: none;
     flex: 1;
 
@@ -40,7 +43,15 @@ export const InputContainer = styled.div`
   }
 `
 
-export const ErrorMessage = styled.span`
-  font-size: 1rem;
+export const ErrorMessage = styled.i`
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   color: ${({ theme }) => theme.colors.error};
+  font-size: 4rem;
 `

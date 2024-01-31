@@ -5,7 +5,7 @@ export const CheckoutFormContainer = styled.form`
   flex-direction: row;
   height: auto;
 
-  padding-top: 4rem;
+  padding: 4rem 16rem;
 
   gap: 3.2rem;
 
@@ -51,14 +51,24 @@ export const CheckoutFormContainer = styled.form`
     }
   }
 `
-export const baseContentStyles = styled.div`
+
+interface baseContentStylesProps {
+  $hasError: boolean
+}
+export const baseContentStyles = styled.div<baseContentStylesProps>`
   display: flex;
   flex-direction: column;
+  position: relative;
+
   gap: 2.4rem;
 
   padding: 4rem;
 
   background: ${({ theme }) => theme.colors.card};
+
+  border: 2px solid
+    ${({ theme, $hasError }) =>
+      $hasError ? theme.colors.error : 'transparent'};
 
   border-radius: 6px;
 
@@ -100,5 +110,9 @@ export const ConfirmButton = styled.button`
 
   &:hover {
     background: ${({ theme }) => theme.colors.yellowDark};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
   }
 `

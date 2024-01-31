@@ -1,13 +1,16 @@
-import { useContext, ReactNode } from 'react'
+import { useContext, ReactNode, useEffect } from 'react'
 import CoffeeCardCart from '../../../../components/CoffeeCardCart'
 import {
   SelectedCoffeesContainer,
   Divider,
   Value,
   ValuesWrapper,
+  ErrorMessage,
 } from './styles'
 import { coffees } from '../../../../data/data'
 import { CartContext } from '../../../../contexts/CartContext'
+import { useFormContext } from 'react-hook-form'
+import { Warning } from 'phosphor-react'
 
 interface SelectedCoffeesProps {
   children: ReactNode
@@ -16,8 +19,18 @@ interface SelectedCoffeesProps {
 export default function SelectedCoffees({ children }: SelectedCoffeesProps) {
   const { userCart, totalOrder, deliveryFee, totalItemsValue } =
     useContext(CartContext)
+
+  const {
+    setValue,
+    formState: { errors },
+  } = useFormContext()
+
+  useEffect(() => {
+    setValue('products', userCart, { shouldValidate: true })
+  }, [setValue, userCart])
+
   return (
-    <SelectedCoffeesContainer>
+    <SelectedCoffeesContainer $hasError={!!errors.products}>
       {userCart.map((item) => {
         const selectedCoffee = coffees.find(
           (coffee) => coffee.id === item.coffeeId,
@@ -66,6 +79,12 @@ export default function SelectedCoffees({ children }: SelectedCoffeesProps) {
         </Value>
       </ValuesWrapper>
       {children}
+
+      {errors.products && (
+        <ErrorMessage title={String(errors.products.message)}>
+          <Warning />
+        </ErrorMessage>
+      )}
     </SelectedCoffeesContainer>
   )
 }

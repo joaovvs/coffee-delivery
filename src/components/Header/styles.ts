@@ -4,6 +4,8 @@ export const HeaderContainer = styled.header`
   display: flex;
   width: 100%;
 
+  padding: 3.2rem 16rem;
+
   align-items: center;
   justify-content: space-between;
 
@@ -36,7 +38,7 @@ export const HeaderContainer = styled.header`
     }
   }
 
-  a {
+  button {
     display: flex;
     position: relative;
 
@@ -53,12 +55,16 @@ export const HeaderContainer = styled.header`
     transition: scale 0.2s;
 
     cursor: pointer;
-    &:hover {
+    &:hover:not(:disabled) {
       transform: scale(1.2);
     }
 
-    &:active {
+    &:hover:not(:disabled) {
       transform: scale(1.1);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
     }
 
     span {

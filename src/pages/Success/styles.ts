@@ -4,7 +4,7 @@ export const SuccessContainer = styled.div`
   display: flex;
   flex-direction: column;
 
-  margin-top: 4rem;
+  padding: 4rem 16rem;
 
   header {
     display: flex;

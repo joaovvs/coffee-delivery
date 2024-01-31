@@ -3,6 +3,8 @@ import styled from 'styled-components'
 export const CoffeeListContainer = styled.div`
   display: flex;
   flex-direction: column;
+
+  padding: 3.2rem 16rem;
   gap: 3.2rem;
 
   h1 {
