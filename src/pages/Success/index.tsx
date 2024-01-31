@@ -9,7 +9,7 @@ import { AcceptedPayments } from '../../data/data'
 export function Success() {
   const { orderData } = useContext(CartContext)
 
-  if (orderData.totalOrderValue) {
+  if (orderData.address) {
     return (
       <SuccessContainer>
         <header>

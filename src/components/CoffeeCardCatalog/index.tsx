@@ -28,7 +28,10 @@ export default function CoffeeCardCatalog({
   const { addCoffeeToCart } = useContext(CartContext)
 
   function showNotification(text: string) {
-    toast(text)
+    toast(text, {
+      position: 'bottom-right',
+      className: 'foo-bar',
+    })
   }
 
   function handleIncrementQuantity() {
