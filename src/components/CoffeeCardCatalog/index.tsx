@@ -10,6 +10,8 @@ import {
 } from './styled'
 import { useContext, useState } from 'react'
 import { CartContext, CartItem } from '../../contexts/CartContext'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 interface CoffeeCardProps {
   variant?: 'catalog' | 'cart'
@@ -24,6 +26,10 @@ export default function CoffeeCardCatalog({
   const [coffeeQuantity, setCoffeeQuantity] = useState(quantity)
 
   const { addCoffeeToCart } = useContext(CartContext)
+
+  function showNotification(text: string) {
+    toast(text)
+  }
 
   function handleIncrementQuantity() {
     setCoffeeQuantity((prevState) => prevState + 1)
@@ -45,7 +51,7 @@ export default function CoffeeCardCatalog({
       }
       addCoffeeToCart(newItem)
       setCoffeeQuantity(1)
-      alert('Item adicionado ao carrinho!')
+      showNotification('Item adicionado ao carrinho!')
     }
   }
 

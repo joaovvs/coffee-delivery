@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const CoffeeListContainer = styled.div`
+export const CoffeeListContainer = styled.section`
   display: flex;
   flex-direction: column;
 

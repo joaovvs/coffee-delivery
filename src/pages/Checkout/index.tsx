@@ -102,9 +102,6 @@ export function Checkout() {
 
   const selectedOption = watch('paymentMode')
 
-  console.log('OPÇÃO SELECIONADA', selectedOption)
-  console.log('Erros', errors)
-
   return (
     <CheckoutFormContainer onSubmit={handleSubmit(handleOrderCartItems)}>
       <FormProvider {...newOrderForm}>

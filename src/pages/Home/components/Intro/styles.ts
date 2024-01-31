@@ -1,11 +1,15 @@
 import styled from 'styled-components'
 import backgroundImg from '../../../../assets/background.png'
 
-export const IntroContainer = styled.div`
+export const IntroContainer = styled.section`
   display: flex;
 
   padding: 9.4rem 16rem;
-  background: url(${backgroundImg}) no-repeat top contain;
+
+  background: url(${backgroundImg}) no-repeat top center/cover;
+
+  background-clip: border-box;
+
   gap: 5.6rem;
 
   h1 {

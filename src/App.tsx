@@ -4,6 +4,7 @@ import { defaultTheme } from './styles/themes/default'
 import { BrowserRouter } from 'react-router-dom'
 import { Router } from './routes/Router.tsx'
 import { CartContextProvider } from './contexts/CartContext.tsx'
+import { ToastContainer } from 'react-toastify'
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <BrowserRouter>
         <CartContextProvider>
           <Router />
+          <ToastContainer />
         </CartContextProvider>
       </BrowserRouter>
       <GlobalStyle />
